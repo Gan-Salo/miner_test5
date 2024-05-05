@@ -8,3 +8,8 @@ class Miner:
         self.rows = rows
         self.cols = cols
         self.mines = mines
+        self.board = self.initialize_board()
+
+    def initialize_board(self):
+        board = [['0' for _ in range(self.cols)] for _ in range(self.rows)]
+        return board

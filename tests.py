@@ -14,5 +14,10 @@ class TestMinesweeper(unittest.TestCase):
         self.assertEqual(miner.cols, cols)
         self.assertEqual(miner.mines, mines)
 
+    def test_empty_board_initialization(self):
+        rows, cols, mines = 10, 10, 0
+        miner = Miner(rows, cols, mines)
+        self.assertEqual(sum(row.count('M') for row in miner.board), 0)
+
 if __name__ == '__main__':
     unittest.main()
