@@ -94,11 +94,31 @@ class TestMiner(unittest.TestCase):
 
     def test_reveal_space_already_opened(self):
         miner = Miner(10, 10, 20)
-        miner.initialize_board()
         miner.opened.add((0, 0))
         with patch.object(tk.Button, 'config') as mocked_button:
             miner.reveal_space(0, 0)
             mocked_button.assert_not_called()
+
+    def test_flag_placement(self):
+        miner = Miner(10, 10, 20)
+        miner.on_right_click(0, 0)
+        self.assertIn((0, 0), miner.flags)
+        self.assertEqual(miner.buttons[(0, 0)]['text'], 'F')
+
+    def test_flag_remove(self):
+        miner = Miner(10, 10, 20)
+        miner.flags.add((0, 0))
+        miner.buttons[(0, 0)]['text'] = 'F'
+        miner.on_right_click(0, 0)
+        self.assertNotIn((0, 0), miner.flags)
+        self.assertEqual(miner.buttons[(0, 0)]['text'], ' ')
+
+    def test_no_flag_for_opened_cell(self):
+        miner = Miner(10, 10, 20)
+        miner.opened.add((0, 0))
+        flags_count = len(miner.flags)
+        miner.on_right_click(0, 0)
+        self.assertEqual(len(miner.flags), flags_count)
 
 if __name__ == '__main__':
     unittest.main()
