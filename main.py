@@ -9,6 +9,9 @@ class Miner:
         self.cols = cols
         self.mines = mines
         self.board = self.initialize_board()
+        self.root = tk.Tk()
+        self.root.title("Сапёр")
+        self.root.resizable(False, False)
 
     def initialize_board(self):
         board = [['0' for _ in range(self.cols)] for _ in range(self.rows)]
