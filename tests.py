@@ -18,7 +18,7 @@ class TestMiner(unittest.TestCase):
     def test_empty_board_initialization(self):
         rows, cols, mines = 10, 10, 0
         miner = Miner(rows, cols, mines)
-        self.assertEqual(sum(row.count('M') for row in miner.board), 0)
+        self.assertEqual(sum(row.count('*') for row in miner.board), 0)
 
     def test_mines_quantity(self):
         rows, cols, mines = 10, 10, 20
@@ -119,6 +119,33 @@ class TestMiner(unittest.TestCase):
         flags_count = len(miner.flags)
         miner.on_right_click(0, 0)
         self.assertEqual(len(miner.flags), flags_count)
+
+    def test_win_condition(self):
+        miner = Miner(3, 3, 1)
+        miner.mine_positions = {(0, 0)}
+        for row in range(3):
+            for col in range(3):
+                if (row, col) != (0, 0):
+                    miner.opened.add((row, col))
+        with patch('tkinter.messagebox.showinfo') as mock_showinfo:
+            miner.check_win()
+            mock_showinfo.assert_called_once_with("Игра окончена", "Вы выиграли!")
+
+    def test_not_win_condition(self):
+        miner = Miner(3, 3, 1)
+        miner.mine_positions = {(0, 0)}
+        miner.opened.add((0, 1))
+        with patch('tkinter.messagebox.showinfo') as mock_showinfo:
+            miner.check_win()
+            mock_showinfo.assert_not_called()
+
+    def test_lose_conditions(self):
+        miner = Miner(3, 3, 1)
+        miner.mine_positions = {(0, 0)}
+        with patch('tkinter.messagebox.showinfo') as mock_showinfo:
+            miner.on_button_click(0, 0)
+            mock_showinfo.assert_called_once_with("Игра окончена", "Вы наткнулись на мину!")
+
 
 if __name__ == '__main__':
     unittest.main()
