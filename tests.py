@@ -92,5 +92,13 @@ class TestMiner(unittest.TestCase):
         count = miner.count_mines_around(0, 0)
         self.assertEqual(count, 1, "Вокруг должна быть 1 мина")
 
+    def test_reveal_space_already_opened(self):
+        miner = Miner(10, 10, 20)
+        miner.initialize_board()
+        miner.opened.add((0, 0))
+        with patch.object(tk.Button, 'config') as mocked_button:
+            miner.reveal_space(0, 0)
+            mocked_button.assert_not_called()
+
 if __name__ == '__main__':
     unittest.main()

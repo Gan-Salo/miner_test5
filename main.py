@@ -15,6 +15,7 @@ class Miner:
         self.create_buttons_on_win()
         self.mine_positions = set()
         self.first_click = True
+        self.opened = set()
 
     def initialize_board(self):
         board = [['0' for _ in range(self.cols)] for _ in range(self.rows)]
@@ -44,9 +45,7 @@ class Miner:
             messagebox.showinfo("Игра окончена", "Вы наткнулись на мину!")
             self.buttons[(row, col)].config(text='*', bg='red')
         else:
-            # Count mines around this cell
-            mines_count = self.count_mines_around(row, col)
-            self.buttons[(row, col)].config(text=str(mines_count), bg='lightgrey')
+            self.reveal_space(row, col)
 
     def count_mines_around(self, row, col):
         return sum(
@@ -56,6 +55,18 @@ class Miner:
             if dx != 0 or dy != 0 if 0 <= row + dx < self.rows and 0 <= col + dy < self.cols
         )
 
+    def reveal_space(self, row, col):
+        if (row, col) in self.opened:
+            return
+        self.opened.add((row, col))
+        count = self.count_mines_around(row, col)
+        button = self.buttons[(row, col)]
+        button.config(text=str(count) if count > 0 else ' ', bg='lightgrey')
+        if count == 0:
+            for dx in [-1, 0, 1]:
+                for dy in [-1, 0, 1]:
+                    if 0 <= row + dx < self.rows and 0 <= col + dy < self.cols and (dx != 0 or dy != 0):
+                        self.reveal_space(row + dx, col + dy)
 
 if __name__ == '__main__':
     app = Miner()
