@@ -8,11 +8,22 @@ class TestMiner(unittest.TestCase):
     def testMinerClassCreation(self):
         miner = Miner()
         self.assertIsNotNone(miner)
+
     def test_initial_attributes(self):
         rows, cols, mines = 10, 10, 20
         miner = Miner(rows, cols, mines)
         self.assertEqual(miner.rows, rows)
         self.assertEqual(miner.cols, cols)
+        self.assertEqual(miner.mines, mines)
+
+    def test_too_many_mines(self):
+        rows, cols, mines = 3, 3, 9
+        with self.assertRaises(ValueError):
+            Miner(rows, cols, mines)
+
+    def test_ok_mines_quantity(self):
+        rows, cols, mines = 3, 3, 8
+        miner = Miner(rows, cols, mines)
         self.assertEqual(miner.mines, mines)
 
     def test_empty_board_initialization(self):
@@ -145,7 +156,6 @@ class TestMiner(unittest.TestCase):
         with patch('tkinter.messagebox.showinfo') as mock_showinfo:
             miner.on_button_click(0, 0)
             mock_showinfo.assert_called_once_with("Игра окончена", "Вы наткнулись на мину!")
-
 
 if __name__ == '__main__':
     unittest.main()

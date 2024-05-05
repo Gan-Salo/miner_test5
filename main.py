@@ -4,10 +4,12 @@ from tkinter import messagebox
 
 
 class Miner:
-    def __init__(self, rows=8, cols=8, mines=120):
+    def __init__(self, rows=8, cols=8, mines=10):
         self.rows = rows
         self.cols = cols
         self.mines = mines
+        if mines >= rows * cols:
+            raise ValueError("Количество мин должно быть меньше, чем количество клеток на поле.")
         self.board = self.initialize_board()
         self.root = tk.Tk()
         self.root.title("Сапёр")
