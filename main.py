@@ -12,6 +12,7 @@ class Miner:
         self.root = tk.Tk()
         self.root.title("Сапёр")
         self.root.resizable(False, False)
+        self.create_buttons_on_win()
 
     def initialize_board(self):
         board = [['0' for _ in range(self.cols)] for _ in range(self.rows)]
@@ -25,6 +26,14 @@ class Miner:
             if board[row][col] != 'M':
                 board[row][col] = 'M'
                 placed_mines += 1
+
+    def create_buttons_on_win(self):
+        self.buttons = {}
+        for row in range(self.rows):
+            for col in range(self.cols):
+                button = tk.Button(self.root, text='', width=4, height=2)
+                button.grid(row=row, column=col)
+                self.buttons[(row, col)] = button
 
 if __name__ == '__main__':
     app = Miner()
