@@ -42,8 +42,7 @@ class Miner:
             self.first_click = False
         if (row, col) in self.mine_positions:
             messagebox.showinfo("Игра окончена", "Вы наткнулись на мину!")
-            self.buttons[(row, col)].config(text='M', bg='red')
-
+            self.buttons[(row, col)].config(text='*', bg='red')
 
 
 if __name__ == '__main__':

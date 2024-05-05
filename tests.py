@@ -20,10 +20,12 @@ class TestMiner(unittest.TestCase):
         miner = Miner(rows, cols, mines)
         self.assertEqual(sum(row.count('M') for row in miner.board), 0)
 
-    #def test_mines_quantity(self):
-    #    rows, cols, mines = 10, 10, 20
-    #    miner = Miner(rows, cols, mines)
-    #    self.assertEqual(len(miner.mine_positions), mines, "Количество размещенных мин не совпадает с инициализированным количеством.")
+    def test_mines_quantity(self):
+        rows, cols, mines = 10, 10, 20
+        start_row, start_col = 0, 0
+        miner = Miner(rows, cols, mines)
+        miner.on_button_click(start_row, start_col)
+        self.assertEqual(len(miner.mine_positions), mines, "Количество размещенных мин не совпадает с инициализированным количеством.")
 
     def test_mines_within_bounds(self):
         rows, cols, mines = 10, 10, 20
@@ -61,6 +63,34 @@ class TestMiner(unittest.TestCase):
         miner = Miner(rows, cols, mines)
         miner.on_button_click(start_row, start_col)
         self.assertFalse(miner.first_click, "Флаг первого клика должен быть изменен")
+
+    def test_no_mines_around(self):
+        rows, cols, mines = 3, 3, 0
+        miner = Miner(rows, cols, mines)
+        miner.mine_positions = set()
+        count = miner.count_mines_around(1, 1)
+        self.assertEqual(count, 0, "Вокруг должно быть 0 мин")
+
+    def test_all_mines_around(self):
+        rows, cols, mines = 3, 3, 0
+        miner = Miner(rows, cols, mines)
+        miner.mine_positions = {(0, 0), (0, 1), (0, 2), (1, 0), (1, 2), (2, 0), (2, 1), (2, 2)}
+        count = miner.count_mines_around(1, 1)
+        self.assertEqual(count, 8, "Вокруг должно быть 8 мин")
+
+    def test_some_mines_around(self):
+        rows, cols, mines = 3, 3, 0
+        miner = Miner(rows, cols, mines)
+        miner.mine_positions = {(0, 0), (1, 2), (2, 2)}
+        count = miner.count_mines_around(1, 1)
+        self.assertEqual(count, 3, "Вокруг должно быть 3 мины")
+
+    def test_no_mines_corner(self):
+        rows, cols, mines = 3, 3, 0
+        miner = Miner(rows, cols, mines)
+        miner.mine_positions = {(1, 1), (2, 2)}
+        count = miner.count_mines_around(0, 0)
+        self.assertEqual(count, 1, "Вокруг должна быть 1 мина")
 
 if __name__ == '__main__':
     unittest.main()
