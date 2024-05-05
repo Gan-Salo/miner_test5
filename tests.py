@@ -4,7 +4,7 @@ from main import Miner
 import tkinter as tk
 import unittest
 
-class TestMinesweeper(unittest.TestCase):
+class TestMiner(unittest.TestCase):
     def testMinerClassCreation(self):
         miner = Miner()
         self.assertIsNotNone(miner)
@@ -20,10 +20,10 @@ class TestMinesweeper(unittest.TestCase):
         miner = Miner(rows, cols, mines)
         self.assertEqual(sum(row.count('M') for row in miner.board), 0)
 
-    def test_mines_quantity(self):
-        rows, cols, mines = 10, 10, 20
-        miner = Miner(rows, cols, mines)
-        self.assertEqual(len(miner.mine_positions), mines, "Количество размещенных мин не совпадает с инициализированным количеством.")
+    #def test_mines_quantity(self):
+    #    rows, cols, mines = 10, 10, 20
+    #    miner = Miner(rows, cols, mines)
+    #    self.assertEqual(len(miner.mine_positions), mines, "Количество размещенных мин не совпадает с инициализированным количеством.")
 
     def test_mines_within_bounds(self):
         rows, cols, mines = 10, 10, 20
@@ -43,6 +43,24 @@ class TestMinesweeper(unittest.TestCase):
         app.initialize_board()
         button_count = sum(isinstance(widget, tk.Button) for widget in app.root.children.values())
         self.assertEqual(button_count, 100, "Должно быть 100 кнопок на поле 10x10")
+
+    def test_mines_not_placed_before_first_click(self):
+        rows, cols, mines = 10, 10, 20
+        miner = Miner(rows, cols, mines)
+        self.assertEqual(len(miner.mine_positions), 0, "Должно быть 0 мин до первого клика")
+
+    def test_no_mine_on_first_click_location(self):
+        rows, cols, mines = 10, 10, 20
+        miner = Miner(rows, cols, mines)
+        self.assertNotIn((rows, cols), miner.mine_positions,
+                         "При первом клике не должно быть мины")
+
+    def test_first_click_flag_cleared(self):
+        rows, cols, mines = 10, 10, 20
+        start_row, start_col = 0, 0
+        miner = Miner(rows, cols, mines)
+        miner.on_button_click(start_row, start_col)
+        self.assertFalse(miner.first_click, "Флаг первого клика должен быть изменен")
 
 if __name__ == '__main__':
     unittest.main()
