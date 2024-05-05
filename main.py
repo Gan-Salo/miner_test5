@@ -43,6 +43,18 @@ class Miner:
         if (row, col) in self.mine_positions:
             messagebox.showinfo("Игра окончена", "Вы наткнулись на мину!")
             self.buttons[(row, col)].config(text='*', bg='red')
+        else:
+            # Count mines around this cell
+            mines_count = self.count_mines_around(row, col)
+            self.buttons[(row, col)].config(text=str(mines_count), bg='lightgrey')
+
+    def count_mines_around(self, row, col):
+        return sum(
+            (row + dx, col + dy) in self.mine_positions
+            for dx in [-1, 0, 1]
+            for dy in [-1, 0, 1]
+            if dx != 0 or dy != 0 if 0 <= row + dx < self.rows and 0 <= col + dy < self.cols
+        )
 
 
 if __name__ == '__main__':
