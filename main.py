@@ -25,4 +25,7 @@ class Miner:
             if board[row][col] != 'M':
                 board[row][col] = 'M'
                 placed_mines += 1
-        return board
+
+if __name__ == '__main__':
+    app = Miner()
+    app.root.mainloop()

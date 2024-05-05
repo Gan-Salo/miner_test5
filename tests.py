@@ -35,5 +35,11 @@ class TestMinesweeper(unittest.TestCase):
         self.assertFalse(app.root.resizable()[0], "Окно не должно быть изменяемым по горизонтали")
         self.assertFalse(app.root.resizable()[1], "Окно не должно быть изменяемым по вертикали")
 
+    def test_win_buttons_creation(self):
+        app = Miner(10, 10, 20)
+        app.initialize_board()
+        button_count = sum(isinstance(widget, tk.Button) for widget in app.root.children.values())
+        self.assertEqual(button_count, 100, "Должно быть 100 кнопок на поле 10x10")
+
 if __name__ == '__main__':
     unittest.main()
