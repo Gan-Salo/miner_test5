@@ -13,3 +13,13 @@ class Miner:
     def initialize_board(self):
         board = [['0' for _ in range(self.cols)] for _ in range(self.rows)]
         return board
+
+    def place_mines(self, board, mines):
+        placed_mines = 0
+        while placed_mines < mines:
+            row = random.randint(0, self.rows - 1)
+            col = random.randint(0, self.cols - 1)
+            if board[row][col] != 'M':
+                board[row][col] = 'M'
+                placed_mines += 1
+        return board
