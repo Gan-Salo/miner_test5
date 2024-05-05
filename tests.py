@@ -20,13 +20,16 @@ class TestMinesweeper(unittest.TestCase):
         miner = Miner(rows, cols, mines)
         self.assertEqual(sum(row.count('M') for row in miner.board), 0)
 
-    def test_mines_placement(self):
+    def test_mines_quantity(self):
         rows, cols, mines = 10, 10, 20
         miner = Miner(rows, cols, mines)
-        board = [['0' for _ in range(cols)] for _ in range(rows)]
-        miner.place_mines(board, mines)
-        actual_mines_count = sum(row.count('M') for row in board)
-        self.assertEqual(actual_mines_count, mines, "Количество расставленных мин не совпадает с инициализированным количеством.")
+        self.assertEqual(len(miner.mine_positions), mines, "Количество размещенных мин не совпадает с инициализированным количеством.")
+
+    def test_mines_within_bounds(self):
+        rows, cols, mines = 10, 10, 20
+        miner = Miner(rows, cols, mines)
+        all_within_bounds = all(0 <= r < rows and 0 <= c < cols for r, c in miner.mine_positions)
+        self.assertTrue(all_within_bounds, "Все мины должны находиться в пределах доски.")
 
     def test_main_window_initialization(self):
         app = Miner()
