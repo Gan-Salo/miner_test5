@@ -1,6 +1,5 @@
-import unittest
 from unittest.mock import patch
-from main import Miner
+from tests.minesweeper import Miner
 import tkinter as tk
 import unittest
 
@@ -45,16 +44,16 @@ class TestMiner(unittest.TestCase):
         self.assertTrue(all_within_bounds, "Все мины должны находиться в пределах доски.")
 
     def test_main_window_initialization(self):
-        app = Miner()
-        self.assertIsInstance(app.root, tk.Tk, "Окно должно быть экземпляром Tk")
-        self.assertEqual(app.root.title(), "Сапёр", "Заголовок окна должен быть 'Сапёр'")
-        self.assertFalse(app.root.resizable()[0], "Окно не должно быть изменяемым по горизонтали")
-        self.assertFalse(app.root.resizable()[1], "Окно не должно быть изменяемым по вертикали")
+        miner = Miner()
+        self.assertIsInstance(miner.root, tk.Tk, "Окно должно быть экземпляром Tk")
+        self.assertEqual(miner.root.title(), "Сапёр", "Заголовок окна должен быть 'Сапёр'")
+        self.assertFalse(miner.root.resizable()[0], "Окно не должно быть изменяемым по горизонтали")
+        self.assertFalse(miner.root.resizable()[1], "Окно не должно быть изменяемым по вертикали")
 
     def test_win_buttons_creation(self):
-        app = Miner(10, 10, 20)
-        app.initialize_board()
-        button_count = sum(isinstance(widget, tk.Button) for widget in app.root.children.values())
+        miner = Miner(10, 10, 20)
+        miner.initialize_board()
+        button_count = sum(isinstance(widget, tk.Button) for widget in miner.root.children.values())
         self.assertEqual(button_count, 100, "Должно быть 100 кнопок на поле 10x10")
 
     def test_mines_not_placed_before_first_click(self):
