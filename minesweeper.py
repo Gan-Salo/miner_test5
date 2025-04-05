@@ -2,7 +2,7 @@
 import tkinter as tk
 import random
 from tkinter import messagebox, ttk, simpledialog
-
+#
 
 class Miner:
     def __init__(self, rows=8, cols=8, mines=10):
