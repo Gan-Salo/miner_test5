@@ -109,7 +109,7 @@ class TestMinerGameLogic(unittest.TestCase):
     def test_reveal_space(self):
         """Проверка открытия клетки"""
         # Устанавливаем известные позиции мин
-        self.miner.mine_positions = {(0, 0), (0, 1), (1, 0)}
+        self.miner.mine_positions = {(1, 0), (0, 1), (1, 0)}
 
         # Открываем клетку с цифрой 3
         self.miner.reveal_space(1, 1)
